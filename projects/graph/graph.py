@@ -122,7 +122,23 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+              # Create an empty stack and push the starting Vertex ID
+        s = Stack()
+        s.push(starting_vertex)
+         # Create an empty set to store visited vertices
+        visited = set()
+         # While the stack is not empty..
+        while s.size() > 0:
+            # Pop the first vertex
+            v = s.pop()
+            # If that vertex has not been visiited...
+            if v not in visited:
+            # Mark it as visited...
+                print(v)
+                visited.add(v)
+             # Then add all of its neighbors to the top of the stack
+            for neighbor in self.vertices[v]:
+                s.push(neighbor)
 
     def dfs_recursive(self, starting_vertex):
         """
