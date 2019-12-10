@@ -97,7 +97,24 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+                # Create an empty queue and enqueu the starting Vertex ID
+        q = Queue()
+        q.enqueue(starting_vertex)
+        # Create and empty set to store visited vertices
+        visited = set()
+        # While the queue is not empty..
+        while q.size() > 0:
+            # Dequeue the first vertex
+            v = q.dequeue()
+            # If that vertex has not been visiited
+            if v not in visited:
+                # Mark it as visited
+                print(v)
+                visited.add(v)
+                # Then add all of its neighbors to the back of the queue
+                for neighbor in self.vertices[v]:
+                    q.enqueue(neighbor)
+
 
     def dfs(self, starting_vertex, destination_vertex):
         """
