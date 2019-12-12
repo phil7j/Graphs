@@ -1,16 +1,13 @@
 import random
-from util import Stack, Queue
-
+from util import Stack, Queue  # These may come in handy
 class User:
     def __init__(self, name):
         self.name = name
-
 class SocialGraph:
     def __init__(self):
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-
     def add_friendship(self, user_id, friend_id):
         """
         Creates a bi-directional friendship
@@ -22,7 +19,6 @@ class SocialGraph:
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
-
     def add_user(self, name):
         """
         Create a new user with a sequential integer ID
@@ -30,17 +26,15 @@ class SocialGraph:
         self.last_id += 1  # automatically increment the ID to assign the new user
         self.users[self.last_id] = User(name)
         self.friendships[self.last_id] = set()
-
     def populate_graph(self, num_users, avg_friendships):
         """
         Takes a number of users and an average number of friendships
         as arguments
-
         Creates that number of users and a randomly distributed friendships
         between those users.
-
         The number of users must be greater than the average number of friendships.
         """
+        # Reset graph
         self.last_id = 0
         self.users = {}
         self.friendships = {}
@@ -57,45 +51,49 @@ class SocialGraph:
                 possible_friendships.append( (user_id, friend_id) )
         # shuffle the list,
         random.shuffle(possible_friendships)
-        print(possible_friendships)
+        # print(possible_friendships)
         # then grab the first N elements from the list.
         # Number of times to call add_friendship = avg_friendships * num_users / 2
         for i in range(num_users * avg_friendships // 2):
             friendship = possible_friendships[i]
             self.add_friendship(friendship[0], friendship[1])
-
     def get_all_social_paths(self, user_id):
+        print(f"Friendships = {self.friendships}\n")
         """
         Takes a user's user_id as an argument
-
         Returns a dictionary containing every user in that user's
         extended network with the shortest friendship path between them.
-
         The key is the friend's ID and the value is the path.
         """
         def get_neighbors(id):
+            # print(f"Friends of {id} {self.friendships[id]}")
             return self.friendships[id]
-
+        paths = []
         visited = {}  # Note that this is a dictionary, not a set
-
+        # !!!! IMPLEMENT ME
         q = Queue()
-        q.enqueue(user_id)
-        visited[user_id] = []
+        q.enqueue([user_id])
+        checked = set()
         while q.size() > 0:
             visiting = q.dequeue()
-            if visiting not in visited:
-                print(visiting)
-                visited[user_id].append(visiting)
-                visiting_neighbors = get_neighbors(user_id)
+            if visiting[-1] not in checked:
+                checked.add(visiting[-1])
+                # print(visiting)
+                # visited.add(visiting)
+                paths.append(visiting)
+                visiting_neighbors = get_neighbors(visiting[-1])
                 for neighbor in visiting_neighbors:
-                    q.enqueue(neighbor)
-
+                    visiting_copy = visiting.copy()
+                    visiting_copy.append(neighbor)
+                    q.enqueue(visiting_copy)
+        # print(f"paths {paths}")
+        for path in paths:
+            visited[path[-1]] = path
+        print(f"visited {visited}")
         return visited
-
-
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
-    print(sg.friendships)
+    # print(f"SG {sg.friendships}")
     connections = sg.get_all_social_paths(1)
-    print(connections)
+    # print(f"Conn {connections}")
