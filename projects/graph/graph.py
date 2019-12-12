@@ -140,7 +140,7 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-              # Create an empty queue and enqueu the starting Vertex ID
+        # Create an empty queue and enqueu the starting Vertex ID
         s = Stack()
         s.push([starting_vertex])
         # Create and empty set to store visited vertices
