@@ -1,4 +1,5 @@
-
+import random
+from util import Stack, Queue
 
 class User:
     def __init__(self, name):
@@ -30,7 +31,7 @@ class SocialGraph:
         self.users[self.last_id] = User(name)
         self.friendships[self.last_id] = set()
 
-    def populate_graph(self, numUsers, avgFriendships):
+    def populate_graph(self, num_users, avg_friendships):
         """
         Takes a number of users and an average number of friendships
         as arguments
@@ -40,15 +41,28 @@ class SocialGraph:
 
         The number of users must be greater than the average number of friendships.
         """
-        # Reset graph
         self.last_id = 0
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
-
         # Add users
-
+        for i in range(num_users):
+            self.add_user(f"User {i+1}")
         # Create friendships
+        # total_friendships =
+        # Create a list with all possible friendship combinations,
+        possible_friendships = []
+        for user_id in self.users:
+            for friend_id in range(user_id + 1, self.last_id + 1):
+                possible_friendships.append( (user_id, friend_id) )
+        # shuffle the list,
+        random.shuffle(possible_friendships)
+        print(possible_friendships)
+        # then grab the first N elements from the list.
+        # Number of times to call add_friendship = avg_friendships * num_users / 2
+        for i in range(num_users * avg_friendships // 2):
+            friendship = possible_friendships[i]
+            self.add_friendship(friendship[0], friendship[1])
 
     def get_all_social_paths(self, user_id):
         """
@@ -59,8 +73,23 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+        def get_neighbors(id):
+            return self.friendships[id]
+
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+
+        q = Queue()
+        q.enqueue(user_id)
+        visited[user_id] = []
+        while q.size() > 0:
+            visiting = q.dequeue()
+            if visiting not in visited:
+                print(visiting)
+                visited[user_id].append(visiting)
+                visiting_neighbors = get_neighbors(user_id)
+                for neighbor in visiting_neighbors:
+                    q.enqueue(neighbor)
+
         return visited
 
 
