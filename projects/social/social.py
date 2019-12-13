@@ -38,7 +38,6 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
         # Add users
         for i in range(num_users):
             self.add_user(f"User {i+1}")
@@ -86,11 +85,12 @@ class SocialGraph:
                     visiting_copy = visiting.copy()
                     visiting_copy.append(neighbor)
                     q.enqueue(visiting_copy)
-        # print(f"paths {paths}")
+        # Turn paths into an object
         for path in paths:
             visited[path[-1]] = path
         print(f"visited {visited}")
         return visited
+
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)

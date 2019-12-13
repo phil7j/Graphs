@@ -23,6 +23,7 @@ def earliest_ancestor(ancestors, starting_node):
         # else
         # If the farthest ancestors are the same distance away, return the smaller one
         # Create an empty queue and enqueu the starting Vertex ID
+
         if path is None:
             path = []
         path = path + [starting_vertex]
